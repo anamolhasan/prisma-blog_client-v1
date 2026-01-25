@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-const layout = ({
+const PracticeLayout = ({
   children,
   marketingSlot,
   salesSlot,
@@ -16,6 +16,9 @@ const layout = ({
         <Link className="hover:underline" href={"/development"}>
           Development
         </Link>
+        <Link className="hover:underline" href={"/testing"}>
+          Testing
+        </Link>
         <Link className="hover:underline" href={"/marketing"}>
           Marketing
         </Link>
@@ -26,9 +29,11 @@ const layout = ({
           Sales
         </Link>
       </nav>
-      <div className="flex gap-32">
-         <div className="border ">{children}</div>
-        <div className="flex gap-12 border">
+
+
+      <div className="flex gap-3">
+         <div className="">{children}</div>
+        <div className="flex ">
           {marketingSlot}
           {salesSlot}
         </div>
@@ -38,4 +43,4 @@ const layout = ({
   );
 };
 
-export default layout;
+export default PracticeLayout;

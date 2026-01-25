@@ -13,8 +13,12 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import Link from "next/link"
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
+
+
+
   return (
     <Card {...props}>
       <CardHeader>
@@ -64,7 +68,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                   Sign up with Google
                 </Button>
                 <FieldDescription className="px-6 text-center">
-                  Already have an account? <a href="#">Sign in</a>
+                  Already have an account? <Link href="/login">Log In</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

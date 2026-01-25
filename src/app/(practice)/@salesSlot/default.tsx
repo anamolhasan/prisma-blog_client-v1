@@ -1,9 +1,11 @@
 import React from 'react'
 
-const salesSlot = () => {
+const SalesSlot = () => {
   return (
-    <div>salesSlot</div>
+     <div className='size-100 border-2 border-cyan-500'>
+      <h1 className='text-2xl'>Sales Slot Default</h1>
+    </div>
   )
 }
 
-export default salesSlot
+export default SalesSlot

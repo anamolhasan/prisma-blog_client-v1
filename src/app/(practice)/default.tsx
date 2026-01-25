@@ -1,9 +1,11 @@
 import React from 'react'
 
-const DefaultLayout = () => {
+const RootDefault = () => {
   return (
-    <div>DefaultLayout</div>
+    <div className='size-100 border-2 border-green-500'>
+      <h1 className='text-2xl'>Practice Default</h1>
+    </div>
   )
 }
 
-export default DefaultLayout
+export default RootDefault

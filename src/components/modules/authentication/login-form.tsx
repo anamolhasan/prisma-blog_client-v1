@@ -15,20 +15,25 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { authClient } from "@/lib/auth-client"
+// import { authClient } from "@/lib/auth-client"
 import Link from "next/link"
+import { authClient } from "@/lib/auth-client"
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+
   const handleGoogleProps = async  () => {
-    const data = authClient.signIn.social({
+    const data = await authClient.signIn.social({
       provider:"google",
       callbackURL:'http://localhost:3000'
     })
     console.log(data)
   }
+
+  const session =  authClient.useSession()
+  console.log(session)
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>

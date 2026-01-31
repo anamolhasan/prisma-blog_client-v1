@@ -1,4 +1,6 @@
+// module 33-12  please recap
 
+import { cookies } from "next/headers";
 import { env } from "process";
 
 const API_URL = env.API_URL;
@@ -18,54 +20,62 @@ interface GetBlogParams {
     search?:string
 }
 
+export interface BlogData {
+  title:string;
+  content:string;
+  tag?:string[];
+}
+
 
 export const blogService = {
- getBlogPost: async function (
-  params?: GetBlogParams,
-  options?: ServiceOptions,
-) {
-  try {
-    // ✅ URL বানানো
-    const url = new URL(`${API_URL}/posts`);
+    getBlogPost: async function (
+      params?: GetBlogParams,
+      options?: ServiceOptions,
+    ) {
+      try {
+        // ✅ URL বানানো
+        const url = new URL(`${API_URL}/posts`);
 
-    // ✅ query params যোগ করা
-    if (params) {
-      Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== '') {
-          url.searchParams.append(key, String(value));
+        // ✅ query params যোগ করা
+        if (params) {
+          Object.entries(params).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') {
+              url.searchParams.append(key, String(value));
+            }
+          });
         }
-      });
-    }
 
-    // ✅ fetch config
-    const config: RequestInit & { next?: { revalidate: number } } = {};
+        // ✅ fetch config
+        const config: RequestInit   = {};
 
-    if (options?.cache) {
-      config.cache = options.cache;
-    }
+        if (options?.cache) {
+          config.cache = options.cache;
+        }
 
-    if (options?.revalidate) {
-      config.next = { revalidate: options.revalidate };
-    }
+        if (options?.revalidate) {
+          config.next = { revalidate: options.revalidate };
+        }
 
-    // ✅ একবারই fetch
-    const res = await fetch(url.toString(), config);
+        config.next = {...config.next, tags:['blogPosts']}
 
-    if (!res.ok) {
-      throw new Error('Failed to fetch posts');
-    }
+        // ✅ একবারই fetch
+        const res = await fetch(url.toString(), config);
 
-    const data = await res.json();
+        if (!res.ok) {
+          throw new Error('Failed to fetch posts');
+        }
 
-    return { data, error: null };
+        const data = await res.json();
 
-  } catch (err) {
-    return {
-      data: null,
-      error: { message: 'Something went wrong' },
-    };
-  }
-},
+        return { data, error: null };
+
+      } catch (err) {
+        return {
+          data: null,
+          error: { message: 'Something went wrong' },
+        };
+      }
+    },
 
 
     getBlogById: async function(id:string) {
@@ -78,5 +88,35 @@ export const blogService = {
         } catch (err) {
             return {data:null, error:{message:'Something Went Wrong'}}
         }
+    },
+
+
+    createBlogPost:async (blogData:BlogData) => {
+      try {
+        const cookieStore = await cookies();
+
+        const res = await fetch(`${API_URL}/posts`, {
+          method:"POST",
+          headers:{
+            'Content-Type':'application/json',
+            Cookie:cookieStore.toString(),
+          },
+          body:JSON.stringify(blogData)
+        })
+
+        const data = await res.json()
+
+        if(data.error){
+          return {
+            data:null,
+            error:{message:'Error Post not created.'}
+          }
+        }
+
+        return {data:data, error:null}
+
+      } catch (err) {
+        return {data:null, error:{message:'Something Went Wrong'}}
+      }
     }
 }

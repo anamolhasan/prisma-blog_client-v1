@@ -8,14 +8,14 @@ import { BlogPost } from "@/types";
 export default async function Home() {
     // const {data} = await userService.getSession()
     const {data} = await blogService.getBlogPost(
-      // {
-      //   isFeatured:true
-      // },
-      // {
-      //   cache:'no-store'
-      // }
+      {
+        isFeatured:false,
+      },
+      {
+        cache:'no-store'
+      }
     )
-//  console.log('route home page ',data)
+ console.log('route home page ',data)
   return (
     <div className="grid grid-cols-3 max-w-7xl mx-auto px-4 gap-6">
       
